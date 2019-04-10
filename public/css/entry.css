@@ -1,0 +1,214 @@
+/* Styles for the Entries Project*/
+
+.entry-main-title{
+    font-size:36px;
+    font-weight:bold;
+    text-transform: uppercase;
+    padding:20px;
+    text-align:center;
+    color:brown;
+    background-color: #ffffff;
+}
+
+.main-title-section-wrap{
+    border:3px solid brown;
+    padding:5px;
+}
+.entry-main-nav{
+    background-color: brown;
+    padding:5px;
+    margin-bottom:0px !important;
+}
+
+.entry-main{
+    color:brown;
+    border:3px solid brown;
+    min-height:200px;
+    padding:2% 1%;
+}
+
+.entry-main-nav li a{
+    text-transform: uppercase;
+    color:#FFFFFF !important;
+    text-decoration: none;
+    padding:5px;
+}
+
+.entry-main-nav li.active a{
+    background-color: brown !important;
+    color:#f0ad4e !important;
+    /*font-weight:bold;*/
+    font-size:1.2em;
+}
+
+.submit-entry{
+    margin:2% 0%;
+}
+
+.list-entry, .list-tags{
+    margin-top:2%;
+}
+
+.listing-header{
+    font-weight:bold;
+    padding-left:5%;
+    font-size:20px;
+    text-align:center;
+    border-top:1px solid brown;
+    border-bottom:1px solid brown;
+    margin-bottom:2%;
+}
+
+.entry-list-title-row td{
+    font-weight:bold;
+    font-size:16px;
+}
+
+.list-entry-date{
+    text-align:right;
+}
+
+.footer .footer-content{
+    background-color: brown;
+    color:#ffffff;
+    font-style:italic;
+    font-size:12px;
+    padding:10px;
+}
+
+.btn-primary{
+    background-color: brown !important;
+}
+
+.keyword-box{
+    min-width:50% !important;
+    border-color:brown;
+}
+
+.pagination{
+    float:right;
+}
+
+.label-block{
+    width:100%;
+    display:block;
+    border:2px solid brown;
+}
+
+.label-lg{
+    font-size:14px;
+    line-height: 1.4em;
+}
+
+.form-errors{
+    padding-top:5px;
+}
+
+.form-errors ul{
+    padding-left:5px;
+}
+
+.form-errors li{
+    list-style:none;
+    padding-left:5px;
+    color:brown;
+    font-size:10px;
+}
+
+.form-errors li .glyphicon{
+    color:brown;
+    padding-right:5px;
+}
+
+.notice-box .alert{
+    margin-bottom:0px;
+}
+
+.action-box .glyphicon{
+    color:brown;
+    padding:0px 5px;
+    font-size:12px;
+}
+
+.add-tag-block{
+    margin-bottom:2%;
+}
+
+.edit-tag-box{
+    margin:5px 0px;
+}
+
+.tags_box{
+    border:2px solid brown;
+    border-radius:5px;
+    padding:10px;
+    max-height:100vh;
+}
+
+.tags_box .tag{
+    display:inline-block;
+    margin:5px;
+}
+
+.attached-tags-box{
+    margin:10px 0px;
+    padding:5px;
+    border:1px solid;
+    border-radius:3px;
+}
+
+.attached-tags-header{
+    text-transform: uppercase;
+    /*font-weight:bold;*/
+    font-size:1.2em;
+    background-color: brown;
+    color:white;
+    text-align:center;
+}
+
+.attached-tag-wrap{
+    margin:5px;
+    display:inline-block;
+}
+.attached-tag{
+    background-color:brown;
+    color:white;
+    border:1px solid brown;
+    border-radius:3px;
+    padding:5px;
+    display:inline;
+}
+
+.attached-tag .remove-tag{
+    font-weight:bold;
+    cursor:pointer;
+    padding-left:3px;
+    display:inline;
+}
+
+.list-tags-attached{
+    background-color: brown;
+    color:white;
+    font-weight:bold;
+}
+
+.list-tags-attached-link{
+    color:#f0ad4e;
+}
+
+.list-tags-attached-link:hover, .list-tags-attached-link:focus{
+    color:#f0ad4e;
+    font-size:1.2em;
+    text-decoration:none;
+}
+
+.tab-box-header{
+    background-color: #f0ad4e;
+    color:brown;
+    font-weight:bold;
+    text-align:center;
+    font-size:16px;
+    border:2px solid brown;
+    border-radius:2px;
+    padding:3px;
+}

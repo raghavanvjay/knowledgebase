@@ -25,12 +25,6 @@ Route::get('code-sample', [
     'as' => 'code-sample'
 ]);
 
-// Route::get('home/{name?}', function ($name="VJ") {
-//     'uses' => 'HomeController@codeSample',
-//         'as' => 'contact-post'
-//     return view('userhome', ['n' => $name]);
-// })->name('home');
-
 Route::group(['prefix' => 'contact'], function () {
     Route::get('contact-us', function () {
         return view('contact.contactus');

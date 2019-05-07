@@ -31,8 +31,9 @@ class EntryController extends Controller
             if(empty($entry))
                 $entry = new Entry();
         }
-        else
+        else {
             $entry = new Entry();
+        }
         $entry->title = $this->escape_input($request['title']);
         $entry->description = $this->escape_input($request['description']);
         $entry->solution = $this->escape_input($request['solution']);

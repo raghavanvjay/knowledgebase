@@ -19,10 +19,10 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
-                        <textarea rows="10" class="form-control" id="description" name="description" placeholder="Small Description of the Title">{{ Request::old('description') ? Request::old('description') : ( empty($entry->description) ? '' : stripslashes($entry->description) ) }}</textarea>
+                        <textarea rows="10" class="form-control" id="description" name="description" placeholder="Small Description of the Title (html tags br, b, p, i allowed)">{{ Request::old('description') ? Request::old('description') : ( empty($entry->description) ? '' : stripslashes($entry->description) ) }}</textarea>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <textarea rows="10" class="form-control" id="solution" name="solution" placeholder="Solution if any">{{ Request::old('solution') ? Request::old('solution') :  ( empty($entry->solution) ? '' : stripslashes($entry->solution) ) }}</textarea>
+                        <textarea rows="10" class="form-control" id="solution" name="solution" placeholder="Solution if any (html tags br, b, p, i allowed)">{{ Request::old('solution') ? Request::old('solution') :  ( empty($entry->solution) ? '' : stripslashes($entry->solution) ) }}</textarea>
                     </div>
                 </div>
                 <div class="row">

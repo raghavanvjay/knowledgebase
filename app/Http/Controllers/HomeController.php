@@ -22,10 +22,31 @@ class HomeController extends Controller
      */
     public function codeSample($name = "VJ")
     {
-        $ticketRequests = [6, 5, -3, -4];
-        $result = $this->ticketSales($ticketRequests);
+        // $seed=11;
+        // $result = $this->drawPattern($seed);
+
+        $players = ['A', 'B', 'C', 'D'];
+        $dieRolls=[
+            [3, 4, 6, 2],
+            [1, 2, 3, 4],
+            [6, 6, 1, 6]
+        ];
+        $result = $this->trackPositions($dieRolls, $players);
+
+        // Ticket sales - process requests
+        // $ticketRequests = [6, 5, -3, -4];
+        // $result = $this->ticketSales($ticketRequests);
+
+        // Strip Strings
+        // $thresholdLength = 4;
+        // $inputStr = "strip out all words greater than +n";
+        // $result = $this->stripString($inputStr, $thresholdLength);
+
+        // Evaluate string expression
         // $exprStr = '150-50-50-50-50';
         // $result = $this->evaluateExpression($exprStr);
+
+        // Sorting sentences by vowel count
         // $sentences = [
         //     0 => "analyse fundamental technical strength and understanding",
         //     1 => "effective determination of technical proficiency",
@@ -33,9 +54,75 @@ class HomeController extends Controller
         //     3 => "communicate clearly and effectively, both verbally and in writing"
         // ];
         // $result = $this->sortSentencesByVowelCount($sentences);
+
+        // Kings moves in Chess
         // $result = $this->kingMoves("A8");
+
         return view('userhome', compact("name", "result"));
     }
+
+    /**
+     * started 15:40
+     * Track position of players based on die rolls
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param array $dieRolls 2D array representing die rolls
+     * @param array $players 1D array with player names
+     *
+     * @return array
+     */
+    public function trackPositions($dieRolls, $players)
+    {
+        $i=0;
+        $playerPositions[$i] = [1, 1, 1, 1];
+        $playerPositions[$i]["comment"] = "Initial position";
+        foreach($dieRolls as $round) {
+            foreach ($round as $key=>$roll) {
+                $comment = $players[$key] . ' rolls ' . $roll;
+                $playerPositions[++$i] = $playerPositions[$i-1];
+                $playerPositions[$i][$key] = $playerPositions[$i-1][$key] + $roll;
+                $opponent = array_search($playerPositions[$i][$key], $playerPositions[$i-1]);
+                if ($opponent !== false) {
+                    $playerPositions[$i][$opponent] = 1;
+                    $comment .= '; resets ' . $players[$opponent];
+                }
+                $playerPositions[$i]['comment']= $comment;
+            }
+        }
+        return $playerPositions;
+    }
+
+    //@note to be completed
+    public function bestFit($booksArray, $fullLength) {
+        // order numbers in ascending order
+        //
+        if (array_sum($booksArray) <= $fullLength) {
+            return $booksArray;
+        }
+
+        foreach($booksArray as $name=>$length) {
+            if ($length > $fullLength) {
+                continue;
+            } else {
+                $set[$name] = $length;
+                $subArray = array_diff_assoc($booksArray, [$name => $length]);
+                $setLength = $length;
+                foreach($subArray as $subName=>$subLength) {
+                    if ($setLength + $subLength > $fullLength) {
+                        break;
+                    }
+                    $set[$subName] = $set[$subLength];
+                }
+            }
+        }
+
+        $validSets = $this->getValidSets($booksArray, $fullLength);
+        foreach($validSets as $validSet) {
+            //Find array with max counts;
+        }
+    }
+
 
     /**
      * Return status messages for ticket requests
@@ -225,5 +312,85 @@ class HomeController extends Controller
         {
           return "Invalid position";
         }
+    }
+
+    /**
+     * Strip strings into important keywords
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param string $inputStr original string input
+     * @param int $threshold minimum string length
+     *
+     * @return string
+     */
+    public function stripString($inputStr, $threshold)
+    {
+        $words = explode(' ', $inputStr);
+        $result = [];
+        foreach($words as $word) {
+            if($word[0] == '+') {
+                $word = substr($word, 1);
+            } elseif ($word[0] == '-' || strlen($word) < $threshold) {
+                $word = false;
+            }
+            if ($word && !in_array($word, $result)) {
+                $result[] = $word;
+            }
+        }
+        return implode(' ', $result);
+    }
+
+    /**
+     * Draw single pattern line
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param int $seed
+     * @param int $blanks no. of initial blank spots
+     *
+     * @return string
+     */
+    public function drawPatternLine($seed, $blanks)
+    {
+        $patternStr = '';
+        for ($i=0; $i<$seed; $i++) {
+            if ($i < $blanks) {
+                $patternStr .= '&nbsp;&nbsp;&nbsp;';
+            } else if($i >= ($seed - $blanks)) {
+                break;
+            } else {
+                $patternStr .= '&nbsp;|&nbsp;';
+            }
+        }
+        $patternStr .= '<br>';
+        return $patternStr;
+    }
+
+    /**
+     * Draw the whole pattern as requested
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param int $seed
+     *
+     * @return string
+     */
+    public function drawPattern($seed)
+    {
+        $blanks = 0;
+        $pattern = '';
+        while(($seed - ($blanks*2)) > 0) {
+            $pattern .= $this->drawPatternLine($seed, $blanks);
+            $blanks++;
+        }
+
+        $blanks--;
+
+        while($blanks >= 0) {
+            $pattern .= $this->drawPatternLine($seed, $blanks);
+            $blanks--;
+        }
+        return $pattern;
     }
 }

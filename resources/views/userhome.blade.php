@@ -16,9 +16,9 @@
         <div class="col-xs-12">
             <h1>Code Result</h1>
             @if(is_array($result))
-                <pre>{{ print_r($result) }}</pre>
+                <pre>{{ print_r($result, true) }}</pre>
             @else
-            <p>{!! $result !!}</p>
+            <pre>{!! $result !!}</pre>
             @endif
         </div>
     </div>

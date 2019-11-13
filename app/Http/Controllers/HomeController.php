@@ -6,6 +6,15 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Dummy home page, with a welcome title and boiler plate text
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param string $name
+     *
+     * @return Illuminate\View\View
+     */
     public function home($name = "VJ")
     {
         return view('userhome', compact("name"));
@@ -22,16 +31,30 @@ class HomeController extends Controller
      */
     public function codeSample($name = "VJ")
     {
-        // $seed=11;
-        // $result = $this->drawPattern($seed);
+        // Single board move - with start position and single move
+        // $startPosition = 'B4';
+        // $move = 'L2';
+        // $result = $this->singleBoardMove($startPosition, $move);
 
-        $players = ['A', 'B', 'C', 'D'];
-        $dieRolls=[
-            [3, 4, 6, 2],
-            [1, 2, 3, 4],
-            [6, 6, 1, 6]
-        ];
-        $result = $this->trackPositions($dieRolls, $players);
+        // Draw pattern like X, given a seed
+        $seed=11;
+        $result = $this->drawPattern($seed);
+
+        // Roll dice and get player positions
+        // $players = ['A', 'B', 'C', 'D'];
+        // $dieRolls=[
+        //     [3, 4, 6, 2],
+        //     [1, 2, 3, 4],
+        //     [6, 6, 1, 6]
+        // ];
+        // $result = $this->trackPositions($dieRolls, $players);
+
+        // Multiple board movement instructions, with min/max boundary setting
+        // $moves = ['R1', 'L2', 'U2', 'D3', 'D4', 'L1', 'R3'];
+        // $startPosition = 'B4';
+        // $minPosition = 'A1';
+        // $maxPosition = 'D4';
+        // $result = $this->boardMovement($startPosition, $moves, $minPosition, $maxPosition);
 
         // Ticket sales - process requests
         // $ticketRequests = [6, 5, -3, -4];
@@ -59,6 +82,116 @@ class HomeController extends Controller
         // $result = $this->kingMoves("A8");
 
         return view('userhome', compact("name", "result"));
+    }
+
+    /**
+     * Function to return move detail given start position and move instruction
+     * @note Started 15:10 to 15:30
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param string $startPos - A1 to D4
+     * @param string $move - 2 letter string like L3 for move left 3 squares
+     * R - right, U - up, D - down
+     *
+     * @return string
+     */
+    public function singleBoardMove($startPos, $move)
+    {
+        $currentPos = $startPos;
+        $minPos = "A1";
+        $maxPos = "D4";
+        $moveLength = (int)$move[1];
+        $valid = false;
+        $direction = [
+            'U' => 'up',
+            'D' => 'down',
+            'L' => 'left',
+            'R' => 'right'
+        ];
+        switch($move[0]){
+            case 'U':
+                if (($currentPos[1] - $minPos[1]) >= $moveLength) {
+                    $currentPos[1] = $currentPos[1] - $moveLength;
+                    $valid = true;
+                }
+            break;
+            case 'D':
+                if (($maxPos[1] - $currentPos[1]) >= $moveLength) {
+                    $currentPos[1] = $currentPos[1] + $moveLength;
+                    $valid = true;
+                }
+            break;
+            case 'R':
+                if ((ord($maxPos[0]) - ord($currentPos[0])) >= $moveLength) {
+                    $currentPos[0] = chr(ord($currentPos[0]) + $moveLength);
+                    $valid = true;
+                }
+            break;
+            case 'L':
+                if ((ord($currentPos[0]) - ord($minPos[0])) >= $moveLength) {
+                    $currentPos[0] = chr(ord($currentPos[0]) - $moveLength);
+                    $valid = true;
+                }
+            break;
+        }
+        if (! $valid) {
+            $currentPos = "invalid";
+        }
+        return sprintf("%s => move %s %d squares => %s", $startPos, $direction[$move[0]], $moveLength, $currentPos);
+
+    }
+
+    /**
+     * Started 11:30 - 11:56
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param string $startPos - A1 to Z9
+     * @param array $moves - array of moves L, R, U, D
+     * @param string $minPos - A1 to Z9
+     * @param string $maxPos - A1 to Z9
+     *
+     * @return array('start', 'end', 'moves', 'invalid')
+     */
+    public function boardMovement($startPos, $moves, $minPos='A1', $maxPos='D4')
+    {
+        $currentPos = $startPos;
+        $invalidMoves = [];
+        foreach($moves as $key=>$move) {
+            $valid = false;
+            $moveLength = (int)$move[1];
+            switch($move[0]){
+                case 'U':
+                    if (($currentPos[1] - $minPos[1]) >= $moveLength) {
+                        $currentPos[1] = $currentPos[1] - $moveLength;
+                        $valid = true;
+                    }
+                break;
+                case 'D':
+                    if (($maxPos[1] - $currentPos[1]) >= $moveLength) {
+                        $currentPos[1] = $currentPos[1] + $moveLength;
+                        $valid = true;
+                    }
+                break;
+                case 'R':
+                    if ((ord($maxPos[0]) - ord($currentPos[0])) >= $moveLength) {
+                        $currentPos[0] = chr(ord($currentPos[0]) + $moveLength);
+                        $valid = true;
+                    }
+                break;
+                case 'L':
+                    if ((ord($currentPos[0]) - ord($minPos[0])) >= $moveLength) {
+                        $currentPos[0] = chr(ord($currentPos[0]) - $moveLength);
+                        $valid = true;
+                    }
+                break;
+            }
+            if (! $valid) {
+                $invalidMoves[$key] = $move;
+            }
+        }
+        return (['start' => $startPos, 'end' => $currentPos, 'invalid' => $invalidMoves, 'moves' => $moves]);
     }
 
     /**
@@ -93,7 +226,19 @@ class HomeController extends Controller
         return $playerPositions;
     }
 
-    //@note to be completed
+    /**
+     * Best fit - MT question solution
+     * Given a shelf of length l, and array of books with width
+     * find the set of books that best fit the shelf
+     *
+     * @author VijayK <vk@lbit.in>
+     *
+     * @param array $booksArray('name', 'length')
+     * @param float $fullLength - length of shelf
+     *
+     * @return array - set of books that best fit the shelf
+     * @note to be completed
+     */
     public function bestFit($booksArray, $fullLength) {
         // order numbers in ascending order
         //
@@ -122,7 +267,6 @@ class HomeController extends Controller
             //Find array with max counts;
         }
     }
-
 
     /**
      * Return status messages for ticket requests
